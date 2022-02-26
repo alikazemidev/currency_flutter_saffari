@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,7 +17,27 @@ class MyApp extends StatelessWidget {
       supportedLocales: [
         Locale('fa', ''), // farsi
       ],
-      theme: ThemeData(fontFamily: 'vazir'),
+      theme: ThemeData(
+        fontFamily: 'vazir',
+        textTheme: TextTheme(
+          headline1: TextStyle(
+            fontFamily: 'vazir',
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+          headline2: TextStyle(
+            fontFamily: 'vazir',
+            fontSize: 14,
+            fontWeight: FontWeight.w300,
+          ),
+          bodyText1: TextStyle(
+            fontFamily: 'vazir',
+            fontSize: 13,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
@@ -34,6 +52,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(243, 243, 243, 1),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -43,21 +62,22 @@ class HomePage extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               'قیمت به روز ارز',
-              style: TextStyle(color: Colors.black),
+              style: Theme.of(context).textTheme.headline1,
             ),
           ),
           Expanded(
             child: Align(
-                alignment: Alignment.centerLeft,
-                child: Image.asset('assets/images/menu.png')),
+              alignment: Alignment.centerLeft,
+              child: Image.asset('assets/images/menu.png'),
+            ),
           ),
           SizedBox(
-            width: 8,
+            width: 16,
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(28.0),
         child: Column(
           children: [
             Row(
@@ -69,17 +89,18 @@ class HomePage extends StatelessWidget {
                 ),
                 Text(
                   'نرخ ارز آزاد چیست؟ ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headline1,
                 ),
               ],
+            ),
+            SizedBox(
+              height: 12,
             ),
             Text(
               ' نرخ ارزها در معاملات نقدی و رایج روزانه است معاملات نقدی معاملاتی هستند که خریدار و فروشنده به محض انجام معامله، ارز و ریال را با هم تبادل می نمایند.',
               textDirection: TextDirection.rtl,
-              style: TextStyle(color: Colors.black),
-            )
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
           ],
         ),
       ),

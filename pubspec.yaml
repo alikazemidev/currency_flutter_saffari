@@ -33,7 +33,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_localizations: 
+  flutter_localizations:
     sdk: flutter
     version: ^0.0.0
 
@@ -78,6 +78,7 @@ flutter:
     - family: vazir
       fonts:
         - asset: assets/fonts/Vazir.woff
+          weight: 300
         - asset: assets/fonts/Vazir-Bold.woff
           weight: 700
 
