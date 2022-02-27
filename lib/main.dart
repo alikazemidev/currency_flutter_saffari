@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
           ),
           headline2: TextStyle(
             fontFamily: 'vazir',
+            color: Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.w300,
           ),
@@ -101,6 +102,34 @@ class HomePage extends StatelessWidget {
               textDirection: TextDirection.rtl,
               style: Theme.of(context).textTheme.bodyText1,
             ),
+            Container(
+              height: 35,
+              margin: EdgeInsets.only(top: 24),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Color.fromARGB(255, 130, 130, 130),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'نام ارز',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    Text(
+                      'قیمت',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    Text(
+                      'تغییر',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
