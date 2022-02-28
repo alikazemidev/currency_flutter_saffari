@@ -104,6 +104,7 @@ class HomePage extends StatelessWidget {
             ),
             Container(
               height: 35,
+              width: double.infinity,
               margin: EdgeInsets.only(top: 24),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
@@ -129,7 +130,52 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
+            Container(
+              width: double.infinity,
+              height: 400,
+              // color: Colors.blue,
+              child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 1.0,
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'دلار',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          Text(
+                            '26.000',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          Text(
+                            '+3%',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
