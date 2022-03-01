@@ -51,6 +51,26 @@ class HomePage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  String _getTime() {
+    return '20:46';
+  }
+
+// show snackbar function
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: Theme.of(context).textTheme.headline1!.copyWith(
+                color: Colors.white,
+              ),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,6 +152,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
+            // list viee
             SizedBox(
               width: double.infinity,
               height: 400,
@@ -151,6 +172,8 @@ class HomePage extends StatelessWidget {
                 },
               ),
             ),
+            Spacer(),
+            // update button box
             Container(
               margin: EdgeInsets.only(
                 top: 12,
@@ -161,21 +184,47 @@ class HomePage extends StatelessWidget {
                 color: Color.fromARGB(255, 232, 232, 232),
                 borderRadius: BorderRadius.circular(1000),
               ),
-              child: TextButton.icon(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Color.fromARGB(255, 202, 193, 255),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //  update btn
+                  SizedBox(
+                    height: 50,
+                    child: TextButton.icon(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(255, 202, 193, 255),
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(1000),
+                          ),
+                        ),
+                      ),
+                      onPressed: () => showSnackBar(
+                        context,
+                        'بروزرسانی با موفقیت انجام شد',
+                      ),
+                      icon: Icon(
+                        CupertinoIcons.refresh_bold,
+                        color: Colors.black,
+                      ),
+                      label: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          'بروزرسانی',
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                onPressed: () {},
-                icon: Icon(
-                  CupertinoIcons.refresh_bold,
-                  color: Colors.black,
-                ),
-                label: Text(
-                  'بروزرسانی',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
+                  //  update time
+                  Text('آخرین بروزرسانی  ${_getTime()}'),
+                  SizedBox(
+                    width: 8,
+                  ),
+                ],
               ),
             ),
           ],
