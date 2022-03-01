@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -131,50 +132,131 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
               height: 400,
               // color: Colors.blue,
-              child: ListView.builder(
+              child: ListView.separated(
                 physics: BouncingScrollPhysics(),
-                itemCount: 10,
+                itemCount: 20,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 1.0,
-                            color: Colors.grey,
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'دلار',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          Text(
-                            '26.000',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          Text(
-                            '+3%',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return ListItem();
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  if (index % 9 == 0) {
+                    return AdItem();
+                  } else {
+                    return SizedBox.shrink();
+                  }
                 },
               ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: 12,
+              ),
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 232, 232, 232),
+                borderRadius: BorderRadius.circular(1000),
+              ),
+              child: TextButton.icon(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Color.fromARGB(255, 202, 193, 255),
+                  ),
+                ),
+                onPressed: () {},
+                icon: Icon(
+                  CupertinoIcons.refresh_bold,
+                  color: Colors.black,
+                ),
+                label: Text(
+                  'بروزرسانی',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ListItem extends StatelessWidget {
+  const ListItem({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Container(
+        width: double.infinity,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 1.0,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              'دلار',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            Text(
+              '26.000',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            Text(
+              '+3%',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AdItem extends StatelessWidget {
+  const AdItem({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Container(
+        width: double.infinity,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Colors.red,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 1.0,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              'تبلیغات',
+              style: Theme.of(context).textTheme.headline2,
             ),
           ],
         ),
