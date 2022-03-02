@@ -172,8 +172,8 @@ class HomePage extends StatelessWidget {
                 },
               ),
             ),
-            Spacer(),
-            // update button box
+            // Spacer(),
+            //* update button box
             Container(
               margin: EdgeInsets.only(
                 top: 12,
@@ -187,7 +187,7 @@ class HomePage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  //  update btn
+                  //* update btn
                   SizedBox(
                     height: 50,
                     child: TextButton.icon(
