@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:currency/model/currency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -34,6 +37,18 @@ class MyApp extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w300,
           ),
+          headline3: TextStyle(
+            fontFamily: 'vazir',
+            color: Colors.red,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
+          headline4: TextStyle(
+            fontFamily: 'vazir',
+            color: Colors.green,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
           bodyText1: TextStyle(
             fontFamily: 'vazir',
             fontSize: 13,
@@ -47,30 +62,47 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  final apiUrl =
-      'http://sasansafari.com/flutter/api.php?access_key=flutter123456';
-  final List<Currency> myCurrencyList = [
-    Currency(
-      id: DateTime.now().toString(),
-      title: 'dollar',
-      price: '20000',
-      change: '+3%',
-      status: 'p',
-    ),
-    Currency(
-      id: DateTime.now().toString(),
-      title: 'rial',
-      price: '600',
-      change: '-5%',
-      status: 'n',
-    ),
-  ];
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+  final List<Currency> myCurrencyList = [];
 
+  getResponse() {
+    Uri apiUrl = Uri.parse(
+        'http://sasansafari.com/flutter/api.php?access_key=flutter123456');
+
+    http.get(apiUrl).then(
+      (respone) {
+        if (myCurrencyList.isEmpty) {
+          if (respone.statusCode == 200) {
+            List jsonList = jsonDecode(respone.body);
+            if (jsonList.length > 0) {
+              for (var i = 0; i < jsonList.length; i++) {
+                setState(() {
+                  myCurrencyList.add(
+                    Currency(
+                      id: jsonList[i]["id"],
+                      title: jsonList[i]["title"],
+                      price: jsonList[i]["price"],
+                      changes: jsonList[i]["changes"],
+                      status: jsonList[i]["status"],
+                    ),
+                  );
+                });
+              }
+            }
+          }
+        }
+      },
+    );
+    print(myCurrencyList);
+  }
 
   String _getTime() {
-    return '20:46';
+    return '20:45';
   }
 
 // show snackbar function
@@ -91,6 +123,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getResponse();
     return Scaffold(
       backgroundColor: Color.fromRGBO(243, 243, 243, 1),
       appBar: AppBar(
@@ -141,6 +174,7 @@ class HomePage extends StatelessWidget {
               textDirection: TextDirection.rtl,
               style: Theme.of(context).textTheme.bodyText1,
             ),
+            // * table title
             Container(
               height: 35,
               width: double.infinity,
@@ -182,7 +216,9 @@ class HomePage extends StatelessWidget {
                   return ListItem(
                     title: myCurrencyList[index].title,
                     price: myCurrencyList[index].price,
-                    change: myCurrencyList[index].change,
+                    change: myCurrencyList[index].changes,
+                    currencyList: myCurrencyList,
+                    position: index,
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
@@ -223,10 +259,13 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onPressed: () => showSnackBar(
-                        context,
-                        'بروزرسانی با موفقیت انجام شد',
-                      ),
+                      onPressed: () {
+                        showSnackBar(
+                          context,
+                          'بروزرسانی با موفقیت انجام شد',
+                        );
+                        getResponse();
+                      },
                       icon: Icon(
                         CupertinoIcons.refresh_bold,
                         color: Colors.black,
@@ -259,7 +298,15 @@ class ListItem extends StatelessWidget {
   final String? title;
   final String? price;
   final String? change;
-  ListItem({this.title, this.price, this.change});
+  final List<Currency>? currencyList;
+  final int? position;
+  ListItem({
+    this.title,
+    this.price,
+    this.change,
+    this.currencyList,
+    this.position,
+  });
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -290,7 +337,9 @@ class ListItem extends StatelessWidget {
             ),
             Text(
               change!,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: currencyList![position!].status == "n"
+                  ? Theme.of(context).textTheme.headline3
+                  : Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
