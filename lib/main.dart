@@ -1,3 +1,4 @@
+import 'package:currency/model/currency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -47,9 +48,26 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({
-    Key? key,
-  }) : super(key: key);
+  final apiUrl =
+      'http://sasansafari.com/flutter/api.php?access_key=flutter123456';
+  final List<Currency> myCurrencyList = [
+    Currency(
+      id: DateTime.now().toString(),
+      title: 'dollar',
+      price: '20000',
+      change: '+3%',
+      status: 'p',
+    ),
+    Currency(
+      id: DateTime.now().toString(),
+      title: 'rial',
+      price: '600',
+      change: '-5%',
+      status: 'n',
+    ),
+  ];
+
+
 
   String _getTime() {
     return '20:46';
@@ -152,16 +170,20 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            // list viee
+            //* list view
             SizedBox(
               width: double.infinity,
               height: 400,
               // color: Colors.blue,
               child: ListView.separated(
                 physics: BouncingScrollPhysics(),
-                itemCount: 20,
+                itemCount: myCurrencyList.length,
                 itemBuilder: (context, index) {
-                  return ListItem();
+                  return ListItem(
+                    title: myCurrencyList[index].title,
+                    price: myCurrencyList[index].price,
+                    change: myCurrencyList[index].change,
+                  );
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   if (index % 9 == 0) {
@@ -172,7 +194,6 @@ class HomePage extends StatelessWidget {
                 },
               ),
             ),
-            // Spacer(),
             //* update button box
             Container(
               margin: EdgeInsets.only(
@@ -235,10 +256,10 @@ class HomePage extends StatelessWidget {
 }
 
 class ListItem extends StatelessWidget {
-  const ListItem({
-    Key? key,
-  }) : super(key: key);
-
+  final String? title;
+  final String? price;
+  final String? change;
+  ListItem({this.title, this.price, this.change});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -260,15 +281,15 @@ class ListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
-              'دلار',
+              title!,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
-              '26.000',
+              price!,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
-              '+3%',
+              change!,
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ],
