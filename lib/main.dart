@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 void main() {
   runApp(MyApp());
@@ -70,35 +71,33 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Currency> myCurrencyList = [];
 
-  getResponse() {
+  Future getResponse() async {
     Uri apiUrl = Uri.parse(
         'http://sasansafari.com/flutter/api.php?access_key=flutter123456');
 
-    http.get(apiUrl).then(
-      (respone) {
-        if (myCurrencyList.isEmpty) {
-          if (respone.statusCode == 200) {
-            List jsonList = jsonDecode(respone.body);
-            if (jsonList.length > 0) {
-              for (var i = 0; i < jsonList.length; i++) {
-                setState(() {
-                  myCurrencyList.add(
-                    Currency(
-                      id: jsonList[i]["id"],
-                      title: jsonList[i]["title"],
-                      price: jsonList[i]["price"],
-                      changes: jsonList[i]["changes"],
-                      status: jsonList[i]["status"],
-                    ),
-                  );
-                });
-              }
-            }
+    var respone = await http.get(apiUrl);
+
+    if (myCurrencyList.isEmpty) {
+      if (respone.statusCode == 200) {
+        List jsonList = jsonDecode(respone.body);
+        if (jsonList.length > 0) {
+          for (var i = 0; i < jsonList.length; i++) {
+            setState(() {
+              myCurrencyList.add(
+                Currency(
+                  id: jsonList[i]["id"],
+                  title: jsonList[i]["title"],
+                  price: jsonList[i]["price"],
+                  changes: jsonList[i]["changes"],
+                  status: jsonList[i]["status"],
+                ),
+              );
+            });
           }
         }
-      },
-    );
-    print(myCurrencyList);
+      }
+    }
+    developer.log(respone.statusCode.toString(), name: 'response');
   }
 
   String _getTime() {
@@ -121,10 +120,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    getResponse();
+  }
 
   @override
   Widget build(BuildContext context) {
-    getResponse();
     return Scaffold(
       backgroundColor: Color.fromRGBO(243, 243, 243, 1),
       appBar: AppBar(
@@ -265,7 +268,6 @@ class _HomePageState extends State<HomePage> {
                           context,
                           'بروزرسانی با موفقیت انجام شد',
                         );
-                        getResponse();
                       },
                       icon: Icon(
                         CupertinoIcons.refresh_bold,
