@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:currency/model/currency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -284,9 +283,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   //  update time
                   Text('آخرین بروزرسانی  ${_getTime()}'),
-                  SizedBox(
-                    width: 8,
-                  ),
+                  SizedBox(width: 8),
                 ],
               ),
             ),
