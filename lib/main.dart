@@ -70,7 +70,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Currency> myCurrencyList = [];
 
-  Future getResponse() async {
+  Future getResponse(BuildContext ctx) async {
     Uri apiUrl = Uri.parse(
         'http://sasansafari.com/flutter/api.php?access_key=flutter123456');
 
@@ -78,6 +78,7 @@ class _HomePageState extends State<HomePage> {
 
     if (myCurrencyList.isEmpty) {
       if (respone.statusCode == 200) {
+        showSnackBar(context, 'به روز رسانی با موفقیت انجام شد');
         List jsonList = jsonDecode(respone.body);
         if (jsonList.length > 0) {
           for (var i = 0; i < jsonList.length; i++) {
@@ -96,7 +97,9 @@ class _HomePageState extends State<HomePage> {
         }
       }
     }
+
     developer.log(respone.statusCode.toString(), name: 'response');
+    return respone;
   }
 
   String _getTime() {
@@ -122,7 +125,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getResponse();
+    getResponse(context);
   }
 
   @override
@@ -212,26 +215,7 @@ class _HomePageState extends State<HomePage> {
               width: double.infinity,
               height: 400,
               // color: Colors.blue,
-              child: ListView.separated(
-                physics: BouncingScrollPhysics(),
-                itemCount: myCurrencyList.length,
-                itemBuilder: (context, index) {
-                  return ListItem(
-                    title: myCurrencyList[index].title,
-                    price: myCurrencyList[index].price,
-                    change: myCurrencyList[index].changes,
-                    currencyList: myCurrencyList,
-                    position: index,
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  if (index % 9 == 0) {
-                    return AdItem();
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                },
-              ),
+              child: listFutureBuilder(context),
             ),
             //* update button box
             Container(
@@ -263,10 +247,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       onPressed: () {
-                        showSnackBar(
-                          context,
-                          'بروزرسانی با موفقیت انجام شد',
-                        );
+                        myCurrencyList.clear();
+                        listFutureBuilder(context);
+                        setState(() {});
                       },
                       icon: Icon(
                         CupertinoIcons.refresh_bold,
@@ -290,6 +273,38 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  FutureBuilder<dynamic> listFutureBuilder(BuildContext context) {
+    return FutureBuilder(
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.separated(
+                physics: BouncingScrollPhysics(),
+                itemCount: myCurrencyList.length,
+                itemBuilder: (context, index) {
+                  return ListItem(
+                    title: myCurrencyList[index].title,
+                    price: myCurrencyList[index].price,
+                    change: myCurrencyList[index].changes,
+                    currencyList: myCurrencyList,
+                    position: index,
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  if (index % 9 == 0) {
+                    return AdItem();
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              );
+      },
+      future: getResponse(context),
     );
   }
 }
