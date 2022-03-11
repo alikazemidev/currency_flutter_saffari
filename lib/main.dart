@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -79,7 +80,6 @@ class _HomePageState extends State<HomePage> {
 
     if (myCurrencyList.isEmpty) {
       if (respone.statusCode == 200) {
-
         setState(() {
           _isloading = false;
         });
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   String _getTime() {
-    return '20:45';
+    return DateFormat('hh:mm:ss').format(DateTime.now());
   }
 
 // show snackbar function
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Text(
               ' نرخ ارزها در معاملات نقدی و رایج روزانه است معاملات نقدی معاملاتی هستند که خریدار و فروشنده به محض انجام معامله، ارز و ریال را با هم تبادل می نمایند.',
-              textDirection: TextDirection.rtl,
+              // textDirection: TextDirection.rtl,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             // * table title
@@ -360,11 +360,12 @@ class ListItem extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
-              price!,
+              getFarsiNumber(price!),
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
-              change!,
+              getFarsiNumber(change.toString()),
               style: currencyList![position!].status == "n"
                   ? Theme.of(context).textTheme.headline3
                   : Theme.of(context).textTheme.headline4,
@@ -410,4 +411,15 @@ class AdItem extends StatelessWidget {
       ),
     );
   }
+}
+
+String getFarsiNumber(String number) {
+  const english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  const farsi = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+  english.forEach((item) {
+    number = number.replaceAll(item, farsi[english.indexOf(item)]);
+  });
+
+  return number;
 }
