@@ -68,6 +68,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var _isloading = false;
   final List<Currency> myCurrencyList = [];
 
   Future getResponse(BuildContext ctx) async {
@@ -78,7 +79,13 @@ class _HomePageState extends State<HomePage> {
 
     if (myCurrencyList.isEmpty) {
       if (respone.statusCode == 200) {
+
+        setState(() {
+          _isloading = false;
+        });
+
         showSnackBar(context, 'به روز رسانی با موفقیت انجام شد');
+
         List jsonList = jsonDecode(respone.body);
         if (jsonList.length > 0) {
           for (var i = 0; i < jsonList.length; i++) {
@@ -247,9 +254,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       onPressed: () {
+                        setState(() {
+                          _isloading = true;
+                        });
                         myCurrencyList.clear();
                         listFutureBuilder(context);
-                        setState(() {});
                       },
                       icon: Icon(
                         CupertinoIcons.refresh_bold,
@@ -279,27 +288,31 @@ class _HomePageState extends State<HomePage> {
   FutureBuilder<dynamic> listFutureBuilder(BuildContext context) {
     return FutureBuilder(
       builder: (context, snapshot) {
-        return snapshot.hasData
-            ? ListView.separated(
-                physics: BouncingScrollPhysics(),
-                itemCount: myCurrencyList.length,
-                itemBuilder: (context, index) {
-                  return ListItem(
-                    title: myCurrencyList[index].title,
-                    price: myCurrencyList[index].price,
-                    change: myCurrencyList[index].changes,
-                    currencyList: myCurrencyList,
-                    position: index,
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  if (index % 9 == 0) {
-                    return AdItem();
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                },
-              )
+        return !_isloading
+            ? (snapshot.hasData
+                ? ListView.separated(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: myCurrencyList.length,
+                    itemBuilder: (context, index) {
+                      return ListItem(
+                        title: myCurrencyList[index].title,
+                        price: myCurrencyList[index].price,
+                        change: myCurrencyList[index].changes,
+                        currencyList: myCurrencyList,
+                        position: index,
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      if (index % 9 == 0) {
+                        return AdItem();
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ))
             : Center(
                 child: CircularProgressIndicator(),
               );
