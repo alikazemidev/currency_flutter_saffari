@@ -151,6 +151,7 @@ class _HomePageState extends State<HomePage> {
               style: Theme.of(context).textTheme.headline1,
             ),
           ),
+          // IconButton(onPressed: (){}, icon: Icon(Icons.dark_mode,color: Colors.black,)),
           Expanded(
             child: Align(
               alignment: Alignment.centerLeft,
@@ -220,7 +221,7 @@ class _HomePageState extends State<HomePage> {
             //* list view
             SizedBox(
               width: double.infinity,
-              height: 400,
+              height: MediaQuery.of(context).size.height / 2,
               // color: Colors.blue,
               child: listFutureBuilder(context),
             ),
@@ -230,7 +231,7 @@ class _HomePageState extends State<HomePage> {
                 top: 12,
               ),
               width: double.infinity,
-              height: 50,
+              height: MediaQuery.of(context).size.height / 16,
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 232, 232, 232),
                 borderRadius: BorderRadius.circular(1000),
@@ -240,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   //* update btn
                   SizedBox(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height / 16,
                     child: TextButton.icon(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
