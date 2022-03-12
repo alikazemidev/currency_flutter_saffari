@@ -353,25 +353,38 @@ class ListItem extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              title!,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            Text(
-              getFarsiNumber(price!),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            Text(
-              getFarsiNumber(change.toString()),
-              style: currencyList![position!].status == "n"
-                  ? Theme.of(context).textTheme.headline3
-                  : Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  title!,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  getFarsiNumber(price!),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  getFarsiNumber(change.toString()),
+                  style: currencyList![position!].status == "n"
+                      ? Theme.of(context).textTheme.headline3
+                      : Theme.of(context).textTheme.headline4,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
